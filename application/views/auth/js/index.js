@@ -1,5 +1,4 @@
 var formData = $('#formData');
-console.log(formData)
 var btnLogin = $('.btn-login');
 function login() {
     $.ajax({

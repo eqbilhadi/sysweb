@@ -124,12 +124,13 @@ CREATE TABLE `com_role` (
   `uid` int(11) DEFAULT NULL,
   `udt` datetime DEFAULT NULL,
   PRIMARY KEY (`role_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 /*Data for the table `com_role` */
 
 insert  into `com_role`(`role_id`,`role_nm`,`role_desc`,`default_page`,`cid`,`cdt`,`uid`,`udt`) values 
-(1,'System Administrator','Hak akses administrator sistem (developer)','sysadmin/profile',1,'2023-09-06 09:27:15',NULL,NULL);
+(1,'System Administrator','Hak akses administrator sistem (developer)','sysadmin/profile',1,'2023-09-06 09:27:15',NULL,NULL),
+(2,'Admin','Admin Aplikasi','admin/home',1,'2023-09-07 22:22:48',NULL,NULL);
 
 /*Table structure for table `com_role_menu` */
 
@@ -171,7 +172,8 @@ CREATE TABLE `com_role_user` (
 /*Data for the table `com_role_user` */
 
 insert  into `com_role_user`(`user_id`,`role_id`) values 
-(2,1);
+(2,1),
+(8,2);
 
 /*Table structure for table `com_user` */
 
@@ -193,7 +195,7 @@ CREATE TABLE `com_user` (
 
 insert  into `com_user`(`user_id`,`username`,`password`,`email`,`cid`,`cdt`,`uid`,`udt`) values 
 (2,'admin','$2y$10$kg1Pf5KBP6XhbAKrVGp3B.26/xbNo6iPaKzCNmIaUGb3u3QBqLFlC','admin@gmail.com',1,'0000-00-00 00:00:00',1,NULL),
-(8,'karyawan','87c78b8da768468c4f3826791496385536c11dad',NULL,0,'0000-00-00 00:00:00',2,NULL);
+(8,'karyawan','$2y$10$kg1Pf5KBP6XhbAKrVGp3B.26/xbNo6iPaKzCNmIaUGb3u3QBqLFlC',NULL,0,'0000-00-00 00:00:00',2,NULL);
 
 /*Table structure for table `customer` */
 

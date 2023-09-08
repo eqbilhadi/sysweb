@@ -8,12 +8,16 @@ class Users extends CI_Controller {
         parent::__construct();
         check_not_login();
         $this->load->model('User_m');
-        
+        $this->load->model('Role_m');
     }
 
     public function index()
     {
-        $this->template->load('template', 'sysadmin/users/index');
+        $role = $this->Role_m->get();
+        $params = [
+            'role' => $role->result_array()
+        ];
+        $this->template->load('template', 'sysadmin/users/index', $params);
     }
 
     public function getUsers()
@@ -43,5 +47,39 @@ class Users extends CI_Controller {
         );
 
         $this->output->set_content_type('application/json')->set_output(json_encode($output));
+    }
+
+    public function create()
+    {
+        if($this->input->is_ajax_request()){
+            $this->form_validation->set_rules('username', 'Username', 'required');
+            $this->form_validation->set_rules('password', 'Password', 'required');
+            $this->form_validation->set_rules('email', 'Email', 'required');
+    
+            $this->form_validation->set_message('required', '%s required!');
+            if ($this->form_validation->run() == FALSE) {
+                $msg = [
+                    'validation' => [
+                        'username' => form_error('username'),
+                        'password' => form_error('password'),
+                        'email' => form_error('email'),
+                    ]
+                ];
+            } else {
+                $post = $this->input->post(null, TRUE);
+                if ($this->User_m->create($post)) {
+                    $msg = [
+                        'success' => 'Data berhasil disimpan'
+                    ];
+                } else {
+                    $msg = [
+                        'failed' => 'Data gagal disimpan'
+                    ];
+                }
+            }
+            $this->output->set_content_type('application/json')->set_output(json_encode($msg));
+        } else {
+            echo "dilarang diakses";
+        }
     }
 }

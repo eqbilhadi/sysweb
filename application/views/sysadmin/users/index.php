@@ -10,7 +10,7 @@
                 <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                     <h4 class="mb-sm-0">Users Lists</h4>
                     <div class="flex-shrink-0">
-                        <button type="button" class="btn btn-primary btn-sm waves-effect waves-light" onclick="add()"><i class="las la-plus-circle"></i> Add User</button>
+                        <button type="button" class="btn btn-primary waves-effect waves-light" onclick="add()"><i class="las la-plus-circle la-lg"></i> Add User</button>
                     </div>
                 </div>
             </div>
@@ -40,13 +40,13 @@
         </div>
     </div>
     <div class="container-fluid" id="formulir" style="display: none;">
-        <form action="#" method="POST">
+        <form action="#" method="POST" id="formData">
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
                         <h4 class="mb-sm-0">Add Users</h4>
                         <div class="flex-shrink-0">
-                            <button type="button" class="btn btn-primary btn-sm waves-effect waves-light" onclick="back()"><i class="las la-arrow-alt-circle-left"></i> Back</button>
+                            <button type="button" class="btn btn-danger waves-effect waves-light" onclick="back()"><i class="las la-arrow-alt-circle-left la-lg"></i> Back</button>
                         </div>
                     </div>
                 </div>
@@ -58,12 +58,14 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username <small class="text-danger fs-14">*</small> </label>
                                 <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
+                                <div class="invalid-feedback msg_username"></div>
                             </div>
                         </div>
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password <small class="text-danger fs-14">*</small> </label>
                                 <input type="text" class="form-control" name="password" id="password" placeholder="Enter user password">
+                                <div class="invalid-feedback msg_password"></div>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -76,6 +78,7 @@
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email <small class="text-danger fs-14">*</small></label>
                                 <input type="email" class="form-control" name="email" id="email" placeholder="Enter user email">
+                                <div class="invalid-feedback msg_email"></div>
                             </div>
                         </div>
                         <div class="col-lg-6">
@@ -93,14 +96,24 @@
                         <div class="col-lg-6">
                             <div class="mb-3">
                                 <label for="phone" class="form-label">Phone Number</label>
-                                <input type="text" class="form-control" name="phone" id="phone" placeholder="Enter user phone number">
+                                <input type="text" class="form-control rounded-end" name="phone" id="phone" placeholder="Enter user phone number" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*?)\..*/g, '$1');" />
                             </div>
                         </div>
-                        <div class="col-lg-6">
+                        <div class="col-lg-3">
+                            <div class="mb-3">
+                                <label for="role" class="form-label">User Role</label>
+                                <select class="form-select mb-3" id="role" name="role">
+                                    <?php foreach ($role as $r) { ?>
+                                        <option value="<?=$r['role_id']?>"><?= $r['role_nm']; ?></option>
+                                    <?php } ?>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3 border-1">
                             <div class="mb-3">
                                 <label for="JoiningdatInput" class="form-label">Gender</label><br>
                                 <div class="form-check form-check-inline mt-2">
-                                    <input class="form-check-input" type="radio" name="gender" id="inlineCheckbox1" value="l">
+                                    <input class="form-check-input" type="radio" name="gender" id="inlineCheckbox1" value="l" checked>
                                     <label class="form-check-label" for="inlineCheckbox1">Laki-Laki</label>
                                 </div>
                                 <div class="form-check form-check-inline mt-2 ml-5">
@@ -109,8 +122,9 @@
                                 </div>
                             </div>
                         </div>
+                        
                         <div class="col-lg-12">
-                            <div class="mb-3 pb-2">
+                            <div class="mb-3">
                                 <label for="address" class="form-label">Address</label>
                                 <textarea class="form-control" name="address" id="address" placeholder="Enter user address" rows="3"></textarea>
                             </div>
@@ -120,7 +134,7 @@
                 <div class="card-footer">
                     <div class="col-lg-12">
                         <div class="hstack gap-2 justify-content-end">
-                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="submit" class="btn btn-primary" id="btnSave" onclick="save()">Save</button>
                         </div>
                     </div>
                 </div>
