@@ -22,12 +22,12 @@
                         <table class="table table-bordered table-nowrap mb-0" id="test" style="width: 100%;">
                             <thead class="table-light">
                                 <tr>
-                                    <th class="text-center">Id</th>
-                                    <th class="text-center">Username</th>
-                                    <th class="text-center">Name</th>
-                                    <th class="text-center">Gender</th>
-                                    <th class="text-center">Phone</th>
-                                    <th class="text-center">Address</th>
+                                    <th class="text-center">No</th>
+                                    <th>Username</th>
+                                    <th>Name</th>
+                                    <th>Gender</th>
+                                    <th>Email</th>
+                                    <th class="text-center">Role</th>
                                     <th class="text-center">Action</th>
                                 </tr>
                             </thead>
@@ -44,7 +44,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="page-title-box d-sm-flex align-items-center justify-content-between">
-                        <h4 class="mb-sm-0">Add Users</h4>
+                        <h4 class="mb-sm-0" id="title-form">Add Users</h4>
                         <div class="flex-shrink-0">
                             <button type="button" class="btn btn-danger waves-effect waves-light" onclick="back()"><i class="las la-arrow-alt-circle-left la-lg"></i> Back</button>
                         </div>
@@ -58,6 +58,7 @@
                             <div class="mb-3">
                                 <label for="username" class="form-label">Username <small class="text-danger fs-14">*</small> </label>
                                 <input type="text" class="form-control" name="username" id="username" placeholder="Enter username">
+                                <input type="hidden" name="user_id" id="user_id">
                                 <div class="invalid-feedback msg_username"></div>
                             </div>
                         </div>

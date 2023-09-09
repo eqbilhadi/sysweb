@@ -1,5 +1,6 @@
 var formData = $('#formData')
 var btnSave = $('#btnSave')
+var saveData
 
 // sweetalert
 const Toast = Swal.mixin({
@@ -26,7 +27,7 @@ $(document).ready(function () {
             "type": "POST"
         },
         "columnDefs": [
-            { "targets": [0, -1], "className": "text-center" },
+            { "targets": [0, -1, -2], "className": "text-center" },
             { "targets": [0], "width": "6%" },
         ],
         "language": {
@@ -38,6 +39,8 @@ $(document).ready(function () {
 function add() {
     $('#index').hide()
     $('#formulir').show()
+    $('#title-form').text('ADD USERS')
+    saveData = 'add'
 }
 
 function back() {
@@ -47,9 +50,15 @@ function back() {
 }
 
 function save() {
+    if(saveData == 'add'){
+        url = "<?= site_url('sysadmin/users/create') ?>"
+    } else if (saveData == 'edit'){
+        url = "<?= site_url('sysadmin/users/update') ?>"
+    }
+
     $.ajax({
         type: "post",
-        url: "<?= site_url('sysadmin/users/create') ?>",
+        url: url,
         data: formData.serialize(),
         dataType: "json",
 
@@ -88,6 +97,101 @@ function save() {
                         $('.msg_' + key).html('');
                     }
                 });
+            }
+        }
+    })
+}
+
+function byid(id, type) {
+    resetAll()
+    if (type == 'edit') {
+        saveData = 'edit';
+    }
+
+    $.ajax({
+        type: "POST",
+        url: "<?= site_url('sysadmin/users/byid') ?>",
+        data: {
+            user_id: id
+        },
+        dataType: "JSON",
+
+        beforeSend: function() {
+            if (type == 'edit') {
+                $('#btnEdit' + id).attr('disabled', true);
+                $('#btnEdit' + id).html('<i class="bx bx-fw bx-loader-alt bx-spin"></i>');
+            }
+            if (type == 'delete') {
+                $('#btnDelete' + id).attr('disabled', true);
+                $('#btnDelete' + id).html('<i class="bx bx-fw bx-loader-alt bx-spin"></i>');
+            }
+        },
+
+        complete: function() {
+            if (type == 'edit') {
+                $('#btnEdit' + id).attr('disabled', false);
+                $('#btnEdit' + id).html('<i class="las la-edit la-lg"></i>');
+            }
+        },
+
+        success: function(response) {
+            if (type == 'edit') {
+                $('#index').hide()
+                $('#formulir').show()
+                $('#title-form').text('EDIT USERS')
+                $('#user_id').val(response.user_id);
+                $('#username').val(response.username);
+                $('#fullname').val(response.user_fullname);
+                $('#email').val(response.email);
+                $('#birthplace').val(response.user_birthplace);
+                $('#birthday').val(response.user_birth_date);
+                $('#phone').val(response.user_phone);
+                $('#address').val(response.user_address);
+                $("input[name=gender][value=" + response.user_gender + "]").prop('checked', true);
+                $("select").val(response.role_id);
+            } else {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Yakin hapus user "'+response.username+'" ini?',
+                    showCancelButton: true,
+                    confirmButtonText: 'Ya',
+                    cancelButtonText: `Tidak`,
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        deleteData(response.user_id);
+                    } else if (result.isDismissed) {
+                        $('#btnDelete' + id).attr('disabled', false);
+                        $('#btnDelete' + id).html('<span class="las la-trash la-lg"></span>');
+                    }
+                });
+            }
+        }
+    })
+}
+
+function deleteData(id) {
+    $.ajax({
+        type: "POST",
+        url: "<?= site_url('sysadmin/users/delete') ?>",
+        data: {
+            user_id: id
+        },
+        dataType: "JSON",
+        success: function(response) {
+            $('#btnDelete' + id).attr('disabled', false);
+            $('#btnDelete' + id).html('<span class="las la-trash la-lg"></span>');
+            if (response.success) {
+                $('#test').DataTable().ajax.reload()
+                Toast.fire({
+                    icon: 'success',
+                    text: response.success,
+                })
+            } else {
+                $('#test').DataTable().ajax.reload()
+                Toast.fire({
+                    icon: 'error',
+                    text: response.error,
+                })
             }
         }
     })
