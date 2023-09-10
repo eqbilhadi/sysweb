@@ -102,7 +102,8 @@ class User_m extends CI_Model
         $com_user = [
             'username' => $p['username'],
             'email' => $p['email'],
-            'cid' => $this->fungsi->user_login()->user_id,
+            'uid' => $this->fungsi->user_login()->user_id,
+            'udt' => date('Y-m-d H:i:s'),
         ];
         if($p['password'] != null){
             $com_user['password'] = password_hash($p['password'], PASSWORD_DEFAULT);
