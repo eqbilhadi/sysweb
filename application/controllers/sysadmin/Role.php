@@ -12,7 +12,10 @@ class Role extends CI_Controller {
 
     public function index()
     {
-        $this->template->load('template', 'sysadmin/role/index');
+        $params = [
+            'page_title' => 'Role',
+        ];
+        $this->template->load('template', 'sysadmin/role/index', $params);
     }
 
     public function getRole()

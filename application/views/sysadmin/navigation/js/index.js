@@ -22,9 +22,12 @@ $(document).ready(function () {
         "processing": true,
         "serverSide": true,
         "ordering": false,
+        "paging": false,
+        "scrollCollapse": true,
+        "scrollY": '450px',
         "order": [],
         "ajax": {
-            "url": "<?= site_url('sysadmin/role/getRole') ?>",
+            "url": "<?= site_url('sysadmin/navigation/getNavigation') ?>",
             "type": "POST"
         },
         "columnDefs": [
@@ -39,15 +42,15 @@ $(document).ready(function () {
 
 function add() {
     modal.modal('show')
-    $('#myModalLabel').text('Add Role')
+    $('#myModalLabel').text('Add Navigation')
     saveData = 'add'
 }
 
 function save() {
     if(saveData == 'add'){
-        url = "<?= site_url('sysadmin/role/create') ?>"
+        url = "<?= site_url('sysadmin/navigation/create') ?>"
     } else if (saveData == 'edit'){
-        url = "<?= site_url('sysadmin/role/update') ?>"
+        url = "<?= site_url('sysadmin/navigation/update') ?>"
     }
 
     $.ajax({
@@ -104,9 +107,9 @@ function byid(id, type) {
 
     $.ajax({
         type: "POST",
-        url: "<?= site_url('sysadmin/role/byid') ?>",
+        url: "<?= site_url('sysadmin/navigation/byid') ?>",
         data: {
-            role_id: id
+            nav_id: id
         },
         dataType: "JSON",
 
@@ -131,21 +134,24 @@ function byid(id, type) {
         success: function(response) {
             if (type == 'edit') {
                 modal.modal('show')
-                $('#myModalLabel').text('Edit Role')
-                $('#role_id').val(response.role_id);
-                $('#role_nm').val(response.role_nm);
-                $('#role_desc').val(response.role_desc);
-                $('#default_page').val(response.default_page);
+                $('#myModalLabel').text('Edit Navigation')
+                $('#nav_id').val(response.nav_id);
+                $('#nav_title').val(response.nav_title);
+                $('#nav_desc').val(response.nav_desc);
+                $('#nav_no').val(response.nav_no);
+                $('#nav_url').val(response.nav_url);
+                $('#faicon').val(response.faicon);
+                $('#induk_menu').val(response.parent_id);
             } else {
                 Swal.fire({
                     icon: 'warning',
-                    title: 'Yakin hapus role "'+response.role_nm+'" ini?',
+                    title: 'Yakin hapus menu "'+response.nav_title+'" ini?',
                     showCancelButton: true,
                     confirmButtonText: 'Ya',
                     cancelButtonText: `Tidak`,
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        deleteData(response.role_id);
+                        deleteData(response.nav_id);
                     } else if (result.isDismissed) {
                         $('#btnDelete' + id).attr('disabled', false);
                         $('#btnDelete' + id).html('<span class="las la-trash la-lg"></span>');
@@ -159,9 +165,9 @@ function byid(id, type) {
 function deleteData(id) {
     $.ajax({
         type: "POST",
-        url: "<?= site_url('sysadmin/role/delete') ?>",
+        url: "<?= site_url('sysadmin/navigation/delete') ?>",
         data: {
-            role_id: id
+            nav_id: id
         },
         dataType: "JSON",
         success: function(response) {

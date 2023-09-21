@@ -15,7 +15,8 @@ class Profile extends CI_Controller {
     {
         $data = $this->User_m->get($this->fungsi->user_login()->user_id);
         $params = array(
-            'data' => $data->row()
+            'data' => $data->row(),
+            'page_title' => 'Profile'
         );
         $this->template->load('template', 'sysadmin/profile/index', $params);
     }

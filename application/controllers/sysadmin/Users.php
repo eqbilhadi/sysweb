@@ -16,7 +16,8 @@ class Users extends CI_Controller
     {
         $role = $this->Role_m->get();
         $params = [
-            'role' => $role->result_array()
+            'role' => $role->result_array(),
+            'page_title' => 'Users'
         ];
         $this->template->load('template', 'sysadmin/users/index', $params);
     }

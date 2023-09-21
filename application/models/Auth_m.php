@@ -40,10 +40,10 @@ class Auth_m extends CI_Model
                 foreach ($sub_menu as $keyword) {
                     $pos = strpos($cleaned_uri, $keyword['nav_url']);
                     if ($pos !== false) {
-                        $cek_aktif = true;
+                        $cek_aktif[$key] = true;
                     }
                 }
-                if (isset($cek_aktif)) {
+                if (isset($cek_aktif[$key])) {
                     $menu_display .= '<li class="nav-item">
                                             <a class="nav-link menu-link active" href="#' . $value['nav_title'] . $value['nav_id'] . '" data-bs-toggle="collapse" role="button" aria-expanded="false" aria-controls="' . $value['nav_title'] . $value['nav_id'] . '">
                                                 <i class="' . $value['faicon'] . '"></i> <span data-key="t-' . strtolower($value['nav_title']) . '">' . $value['nav_title'] . '</span>
@@ -92,8 +92,8 @@ class Auth_m extends CI_Model
         $this->db->join('com_role_menu b', 'a.nav_id = b.nav_id');
         $this->db->where('b.role_id', $id);
         $this->db->where('a.parent_id', 0);
-        $this->db->order_by('nav_no', 'asc');
-
+        $this->db->order_by('parent_id', 'ASC');
+        $this->db->order_by('nav_no', 'ASC');
         $query = $this->db->get();
         return $query;
     }
@@ -104,7 +104,8 @@ class Auth_m extends CI_Model
         $this->db->join('com_role_menu b', 'a.nav_id = b.nav_id');
         $this->db->where('a.parent_id', $id);
         $this->db->where('b.role_id', $role_id);
-        $this->db->order_by('nav_no', 'asc');
+        $this->db->order_by('parent_id', 'ASC');
+        $this->db->order_by('nav_no', 'ASC');
         $query = $this->db->get();
         return $query;
     }
